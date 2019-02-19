@@ -28,6 +28,9 @@ func RequestStats() gin.HandlerFunc {
 		c.Next()
 		handlerName := strings.Replace(c.Request.URL.Path, "/", "-", -1)
 		handlerName = handlerName[1:len(handlerName)]
+		if len(handlerName) == 0 {
+			handlerName = "root"
+		}
 
 		// Requests Per Second (total and per-handler)
 		totalReq := metrics.GetOrRegisterMeter(ginRequestMetric, nil)
@@ -44,7 +47,7 @@ func RequestStats() gin.HandlerFunc {
 		latency.UpdateSince(start)
 
 		// HTTP Status, e.g. 200, 404, 500 (total and per-handler)
-		totalStatus := metrics.GetOrRegisterMeter(fmt.Sprintf("%s.%d", ginStatusMetric, handlerName, c.Writer.Status()), nil)
+		totalStatus := metrics.GetOrRegisterMeter(fmt.Sprintf("%s.%d", ginStatusMetric, c.Writer.Status()), nil)
 		totalStatus.Mark(1)
 
 		status := metrics.GetOrRegisterMeter(fmt.Sprintf("%s.%s.%d", ginStatusMetric, handlerName, c.Writer.Status()), nil)
