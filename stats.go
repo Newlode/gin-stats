@@ -2,6 +2,7 @@ package stats
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -32,7 +33,8 @@ func RequestStats() gin.HandlerFunc {
 		latency := metrics.GetOrRegisterTimer(ginLatencyMetric, nil)
 		latency.UpdateSince(start)
 
-		status := metrics.GetOrRegisterMeter(fmt.Sprintf("%s.%d", ginStatusMetric, c.Writer.Status()), nil)
+		handlerName := strings.Replace(c.Request.URL.Path, "/", "-", -1)
+		status := metrics.GetOrRegisterMeter(fmt.Sprintf("%s.%s.%d", ginStatusMetric, handlerName, c.Writer.Status()), nil)
 		status.Mark(1)
 	}
 }
