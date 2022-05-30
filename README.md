@@ -14,11 +14,11 @@ Lightweight Gin's middleware for request metrics
 Download and install it:
 
 ```sh
-$ go get github.com/semihalev/gin-stats
+$ go get github.com/newlode/gin-stats
 ```
 
 ```go
-import "github.com/semihalev/gin-stats"
+import "github.com/newlode/gin-stats"
 ```
 
 ### Example usage:
@@ -31,7 +31,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/semihalev/gin-stats"    
+	"github.com/newlode/gin-stats"    
 )
 
 func main() {
